@@ -1,31 +1,45 @@
 package com.jakegodsall.audiophilerestapi.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 public class User {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false, unique = true)
+    private String email;
     private String firstName;
     private String lastName;
-    private String email;
     private String password;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    private Set<Role> roles;
 
 
     public User() {}
 
-    public User(long id, String username, String firstName, String lastName, String password, String email) {
+    public User(long id,
+                String username,
+                String email,
+                String firstName,
+                String lastName,
+                String password) {
         this.id = id;
         this.username = username;
+        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
         this.password = password;
-
     }
 
     public long getId() {
@@ -76,15 +90,24 @@ public class User {
         this.email = email;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 }
