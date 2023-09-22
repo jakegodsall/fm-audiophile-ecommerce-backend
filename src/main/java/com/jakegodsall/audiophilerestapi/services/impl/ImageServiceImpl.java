@@ -1,6 +1,7 @@
 package com.jakegodsall.audiophilerestapi.services.impl;
 
 import com.jakegodsall.audiophilerestapi.entities.Image;
+import com.jakegodsall.audiophilerestapi.payload.ImageDto;
 import com.jakegodsall.audiophilerestapi.repositories.ImageRepository;
 import com.jakegodsall.audiophilerestapi.services.ImageService;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,34 @@ public class ImageServiceImpl implements ImageService {
         return Files.readAllBytes(new File(filePath).toPath());
     }
 
-    public List<Image> getImagesFromDb() {
-        return repository.findAll();
+    @Override
+    public List<ImageDto> getAllImages() {
+        return repository
+                .findAll()
+                .stream()
+                .map(this::mapToDto)
+                .toList();
     }
+
+    @Override
+    public ImageDto getImageById(long id) {
+        return null;
+    }
+
+    @Override
+    public void deleteImageById(long id) {
+
+    }
+
+    private ImageDto mapToDto(Image image) {
+        ImageDto dto = new ImageDto();
+        dto.setId(image.getId());
+        dto.setName(image.getName());
+        dto.setType(image.getType());
+        dto.setViewport(image.getViewport());
+        dto.setFilepath(image.getFilePath());
+
+        return dto;
+    }
+
 }

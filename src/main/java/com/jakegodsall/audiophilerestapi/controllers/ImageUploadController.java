@@ -1,6 +1,7 @@
 package com.jakegodsall.audiophilerestapi.controllers;
 
 import com.jakegodsall.audiophilerestapi.entities.Image;
+import com.jakegodsall.audiophilerestapi.payload.ImageDto;
 import com.jakegodsall.audiophilerestapi.repositories.ImageRepository;
 import com.jakegodsall.audiophilerestapi.services.ImageService;
 import org.apache.coyote.Response;
@@ -33,8 +34,8 @@ public class ImageUploadController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Image>> getImages() {
-        List<Image> images = service.getImagesFromDb();
+    public ResponseEntity<List<ImageDto>> getImages() {
+        List<ImageDto> images = service.getAllImages();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(images);
     }

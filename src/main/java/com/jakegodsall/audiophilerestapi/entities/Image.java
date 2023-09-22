@@ -1,24 +1,29 @@
 package com.jakegodsall.audiophilerestapi.entities;
 
+import com.jakegodsall.audiophilerestapi.entities.enums.ViewportSize;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "image")
 public class Image {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String type;
+    @Enumerated(EnumType.STRING)
+    private ViewportSize viewport;
     private String filePath;
 
     public Image() {
     }
 
-    public Image(Long id, String name, String type, String filePath) {
+    public Image(Long id, String name, String type, String viewport, String filePath) {
         this.id = id;
         this.name = name;
         this.type = type;
+        this.viewport = ViewportSize.valueOf(viewport);
         this.filePath = filePath;
     }
 
@@ -46,6 +51,14 @@ public class Image {
         this.type = type;
     }
 
+    public ViewportEnum getViewport() {
+        return viewport;
+    }
+
+    public void setViewport(ViewportEnum viewport) {
+        this.viewport = viewport;
+    }
+
     public String getFilePath() {
         return filePath;
     }
@@ -64,3 +77,4 @@ public class Image {
                 '}';
     }
 }
+
